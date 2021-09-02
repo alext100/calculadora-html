@@ -63,6 +63,7 @@ calculator.addEventListener("click", function typeOfKey(event) {
                     number1 = display.textContent;
                     operator = event.target.className;
                     n1 = "";
+                    display.textContent += event.target.textContent;
                 } else if (result === 0) {
                     number1 = n1;
                     n1 = "";
