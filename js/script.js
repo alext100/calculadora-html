@@ -23,12 +23,12 @@ calculator.addEventListener("click", function typeOfKey(event) {
     if (event.target.nodeName === "BUTTON") {
         switch (event.target.className) {
             case "number":
-                if (display.textContent === "0") {
+                if (display.textContent === "") {
                     n1 = event.target.textContent;
-                } else if (display.textContent !== "0") {
+                } else if (display.textContent !== "") {
                     n1 += event.target.textContent;
                 }
-                display.textContent = n1;
+                display.textContent += n1;
                 break;
             case "comma":
                 if (display.textContent === "0") {
@@ -43,10 +43,10 @@ calculator.addEventListener("click", function typeOfKey(event) {
                 break;
             case "ac":
                 display.textContent = 0;
-                n1 = 0;
-                number1 = 0;
-                number2 = 0;
-                result = 0;
+                n1 = "";
+                number1 = "";
+                number2 = "";
+                result = "";
                 operator = 0;
                 break;
             case "del":
@@ -59,7 +59,14 @@ calculator.addEventListener("click", function typeOfKey(event) {
             case "subtract":
             case "divide":
             case "multiply":
-                if (result !== 0) {
+                if (display.textContent !== "" && (display.textContent.includes("+") || display.textContent.includes("-") || display.textContent.includes("÷") || display.textContent.includes("×"))) {
+                    console.log(`attencion ${display.textContent}`);
+                    number2 = n1;
+                    result = calculate(number1, operator, number2);
+                    display.textContent = result + event.target.textContent;
+                    number1 = result;
+                    break;
+                } else if (result !== 0) {
                     number1 = display.textContent;
                     operator = event.target.className;
                     n1 = "";
@@ -68,6 +75,7 @@ calculator.addEventListener("click", function typeOfKey(event) {
                     number1 = n1;
                     n1 = "";
                     operator = event.target.className;
+                    display.textContent += event.target.textContent;
                 }
                 break;
             case "enter":
