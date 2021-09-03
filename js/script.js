@@ -73,9 +73,11 @@ calculator.addEventListener("click", function typeOfKey(event) {
                 previousKey = "operator";
                 break;
             case "comma":
-                if (display.textContent === "") {
+                if (display.textContent === "" || previousKey === "operator") {
                     n1 = 0;
                     n1 += event.target.textContent;
+                } else if (previousKey === "enter") {
+                    break;
                 } else if (display.textContent !== "" && !n1.includes(".")) {
                     n1 += event.target.textContent;
                 } else if (display.textContent !== "" && n1.includes(".")) {
