@@ -18,8 +18,8 @@ const calculate = (n1, operator, n2) => {
     if (operator === 'divide') return firstNum / secondNum;
 }
 
-calculator.addEventListener("click", function typeOfKey(event) {
-    if (event.target.nodeName === "BUTTON") {
+calculator.addEventListener('click', (event) => {
+    if (event.target.nodeName === 'BUTTON') {
         switch (event.target.className) {
             case "number":
                 caseNumber(event.target.textContent);
@@ -46,101 +46,98 @@ calculator.addEventListener("click", function typeOfKey(event) {
     }
 });
 
-window.addEventListener('keydown', (ev) => {
-    //const isNumber = ev.code.indexOf('Digit') > -1;
-    //if (isNumber && !ev.shiftKey) {
+window.addEventListener('keydown', (event) => {
     const isNumber = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
-    if (isNumber.includes(ev.key)) {
-        caseNumber(ev.key);
-        console.log(ev.code)
-    } else if (ev.code === "Backspace") {
+    if (isNumber.includes(event.key)) {
+        caseNumber(event.key);
+    } else if (event.code === 'Backspace') {
         caseDel();
-    } else if (ev.code === 'Space' || ev.code === 'Escape') {
+    } else if (event.code === 'Space' || event.code === 'Escape') {
         caseAc();
-    } else if (ev.code === 'Enter' || ev.code === 'NumpadEnter') {
+    } else if (event.code === 'Enter' || event.code === 'NumpadEnter') {
         caseEnter();
-    } else if (ev.code === 'Period' || ev.code === 'NumpadDecimal') {
-        caseComma(ev.key);
-    } else if (ev.code === 'NumpadMultiply' || ev.key === '*') {
-        const event = 'multiply';
-        caseOperator(ev.key, event);
-    } else if (ev.code === 'BracketRight' || ev.code === 'NumpadAdd') {
-        const event = "add";
-        caseOperator(ev.key, event);
-    } else if (ev.code === 'Slash' || ev.code === 'NumpadSubtract') {
-        const event = "subtract";
-        caseOperator(ev.key, event);
-    } else if (ev.key === '/' || ev.code === 'NumpadDivide') {
-        const event = "divide";
-        caseOperator(ev.key, event);
+    } else if (event.code === 'Period' || event.code === 'NumpadDecimal') {
+        caseComma(event.key);
+    } else if (event.code === 'NumpadMultiply' || event.key === '*') {
+        const eventName = 'multiply';
+        caseOperator(event.key, eventName);
+    } else if (event.code === 'BracketRight' || event.code === 'NumpadAdd') {
+        const eventName = 'add';
+        caseOperator(event.key, eventName);
+    } else if (event.code === 'Slash' || event.code === 'NumpadSubtract') {
+        const eventName = 'subtract';
+        caseOperator(event.key, eventName);
+    } else if (event.key === '/' || event.code === 'NumpadDivide') {
+        const eventName = 'divide';
+        caseOperator(event.key, eventName);
     };
 });
 
-function caseNumber(txtCont) {
+function caseNumber(symbol) {
     if (display.textContent === "") {
-        n1 = txtCont;
+        n1 = symbol;
         display.textContent = n1;
     } else if (previousKey === "enter") {
         return;
     } else if (previousKey !== "operator") {
         if (number1 === "") {
-            n1 += txtCont;
+            n1 += symbol;
             display.textContent = "";
             display.textContent = n1;
         } else {
-            n1 += txtCont;
+            n1 += symbol;
             display.textContent = n1;
         }
     } else if (previousKey === "operator") {
-        n1 = txtCont;
+        n1 = symbol;
         display.textContent = n1;
     }
     previousKey = "number";
 }
 
-function caseOperator(txtCont, clName) {
+function caseOperator(symbol, clName) {
     if (display.textContent === "") {
         return;
     } else if (previousKey === "enter") {
         operator = clName;
         number1 = result;
-        display.textContent = number1 + txtCont;
+        display.textContent = number1 + symbol;
         previousKey = "operator";
     } else if (previousKey === "del") {
         number1 = display.textContent;
         operator = clName;
-        display.textContent = number1 + txtCont;
+        display.textContent = number1 + symbol;
         previousKey = "operator";
         return;
     } else if (previousKey !== "operator") {
         if (number1 === "") {
             operator = clName;
             number1 = n1;
-            display.textContent = number1 + txtCont;
+            display.textContent = number1 + symbol;
             previousKey = "operator";
         } else {
             number2 = n1;
             result = calculate(number1, operator, number2);
             operator = clName;
             number1 = result;
-            display.textContent = number1 + txtCont;
+            display.textContent = number1 + symbol;
             previousKey = "operator";
         }
     } else if (previousKey === "operator") {
         operator = clName;
         display.textContent = "";
-        display.textContent = number1 + txtCont;
+        display.textContent = number1 + symbol;
     }
 }
 
-function caseComma(txtCont) {
+function caseComma(symbol) {
     if (display.textContent === "" || previousKey === "operator") {
         n1 = 0;
-        n1 += txtCont;
+        n1 += symbol;
     } else if (previousKey === "enter") {
         return;
     } else if (display.textContent !== "" && !n1.includes(".")) {
-        n1 += txtCont;
+        n1 += symbol;
     } else if (display.textContent !== "" && n1.includes(".")) {
         return;
     }
