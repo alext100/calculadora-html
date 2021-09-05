@@ -11,7 +11,6 @@ let result = "";
 const calculate = (n1, operator, n2) => {
     const firstNum = parseFloat(n1);
     const secondNum = parseFloat(n2);
-    console.log(`firstNum = ${firstNum}, secondNum = ${secondNum}, operator = ${operator}`)
     if (operator === 'add') return firstNum + secondNum;
     if (operator === 'subtract') return firstNum - secondNum;
     if (operator === 'multiply') return firstNum * secondNum;
@@ -74,21 +73,15 @@ window.addEventListener('keydown', (event) => {
 });
 
 function caseNumber(NumberCharacterFromListener) {
-    if (display.textContent === "") {
+    if (display.textContent === "0") {
         enteredCharacter = NumberCharacterFromListener;
         display.textContent = enteredCharacter;
     } else if (previousKey === "enter") {
-        return;
-    } else if (previousKey !== "operator") {
-        if (number1 === "") {
-            enteredCharacter += NumberCharacterFromListener;
-            display.textContent = "";
-            display.textContent = enteredCharacter;
-        } else {
-            enteredCharacter += NumberCharacterFromListener;
-            display.textContent = enteredCharacter;
-        }
-    } else if (previousKey === "operator") {
+        return; //exclude an attempt to put the second operand after Enter operation if the operator character was not entered
+    } else if (previousKey !== "operator") { //if the previously entered key is not an operator, we form the operand using concatenation
+        enteredCharacter += NumberCharacterFromListener;
+        display.textContent = enteredCharacter;
+    } else if (previousKey === "operator") { //if the previously entered key is an operator, we begin to form the next operand
         enteredCharacter = NumberCharacterFromListener;
         display.textContent = enteredCharacter;
     }
@@ -96,7 +89,7 @@ function caseNumber(NumberCharacterFromListener) {
 }
 
 function caseOperator(NumberCharacterFromListener, operatorCharacterFromListener) {
-    if (display.textContent === "") {
+    if (display.textContent === "0" && previousKey !== "enter") {
         return;
     } else if (previousKey === "enter") {
         operator = operatorCharacterFromListener;
@@ -125,20 +118,19 @@ function caseOperator(NumberCharacterFromListener, operatorCharacterFromListener
         }
     } else if (previousKey === "operator") {
         operator = operatorCharacterFromListener;
-        display.textContent = "";
         display.textContent = number1 + NumberCharacterFromListener;
     }
 }
 
 function caseComma(NumberCharacterFromListener) {
-    if (display.textContent === "" || previousKey === "operator") {
+    if (display.textContent === "0" || previousKey === "operator") {
         enteredCharacter = 0;
         enteredCharacter += NumberCharacterFromListener;
     } else if (previousKey === "enter") {
         return;
-    } else if (display.textContent !== "" && !enteredCharacter.includes(".")) {
+    } else if (display.textContent !== "0" && !enteredCharacter.includes(".")) {
         enteredCharacter += NumberCharacterFromListener;
-    } else if (display.textContent !== "" && enteredCharacter.includes(".")) {
+    } else if (display.textContent !== "0" && enteredCharacter.includes(".")) {
         return;
     }
     display.textContent = enteredCharacter;
@@ -146,7 +138,7 @@ function caseComma(NumberCharacterFromListener) {
 }
 
 function caseAc() {
-    display.textContent = "";
+    display.textContent = "0";
     enteredCharacter = "";
     number1 = "";
     number2 = "";
@@ -156,7 +148,7 @@ function caseAc() {
 }
 
 function caseDel() {
-    if (display.textContent !== "") {
+    if (display.textContent !== "0") {
         enteredCharacter = display.textContent.split("").slice(0, -1).join('');
     }
     display.textContent = enteredCharacter;
@@ -164,10 +156,14 @@ function caseDel() {
 }
 
 function caseEnter() {
-    number2 = enteredCharacter;
-    result = calculate(number1, operator, number2);
-    display.textContent = result;
-    number1 = result;
-    console.log(`result = ${result}`);
-    previousKey = "enter";
+    if (display.textContent === "0" && result === "" || (number1 === "" && previousKey === "number")) {
+        return; //exclude an attempt to press Enter when the second operand is not entered
+    } else {
+        number2 = enteredCharacter;
+        result = calculate(number1, operator, number2);
+        display.textContent = result;
+        number1 = result;
+        previousKey = "enter";
+    }
+
 }
