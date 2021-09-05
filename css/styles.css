@@ -25,7 +25,7 @@ body {
 
 .calculator__display {
     /* max-width: 86%; */
-    min-height: 85px;
+    min-height: 87px;
     background-color: #f1e9e9;
     color: rgb(0, 0, 0);
     font-size: 3em;
