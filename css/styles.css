@@ -1,11 +1,3 @@
-*,
-*::before,
-*::after {
-    box-sizing: border-box;
-    font-family: Gotham Rounded, sans-serif;
-    font-weight: normal;
-}
-
 body {
     padding: 20;
     margin: 20;
@@ -24,12 +16,10 @@ body {
 }
 
 .calculator__display {
-    /* max-width: 86%; */
     min-height: 87px;
     background-color: #f1e9e9;
     color: rgb(0, 0, 0);
     font-size: 3em;
-    /* padding: 0.5em 0.75em; */
     word-wrap: break-word;
     text-align: right;
     outline: none;

@@ -1,7 +1,7 @@
 const display = document.querySelector('.calculator__display');
 const calculator = document.querySelector('.calc_body');
 let key;
-let n1 = "";
+let enteredCharacter = "";
 let number1 = "";
 let number2 = "";
 let operator = "";
@@ -73,82 +73,81 @@ window.addEventListener('keydown', (event) => {
     };
 });
 
-function caseNumber(symbol) {
+function caseNumber(NumberCharacterFromListener) {
     if (display.textContent === "") {
-        n1 = symbol;
-        display.textContent = n1;
+        enteredCharacter = NumberCharacterFromListener;
+        display.textContent = enteredCharacter;
     } else if (previousKey === "enter") {
         return;
     } else if (previousKey !== "operator") {
         if (number1 === "") {
-            n1 += symbol;
+            enteredCharacter += NumberCharacterFromListener;
             display.textContent = "";
-            display.textContent = n1;
+            display.textContent = enteredCharacter;
         } else {
-            n1 += symbol;
-            display.textContent = n1;
+            enteredCharacter += NumberCharacterFromListener;
+            display.textContent = enteredCharacter;
         }
     } else if (previousKey === "operator") {
-        n1 = symbol;
-        display.textContent = n1;
+        enteredCharacter = NumberCharacterFromListener;
+        display.textContent = enteredCharacter;
     }
     previousKey = "number";
 }
 
-function caseOperator(symbol, clName) {
+function caseOperator(NumberCharacterFromListener, operatorCharacterFromListener) {
     if (display.textContent === "") {
         return;
     } else if (previousKey === "enter") {
-        operator = clName;
+        operator = operatorCharacterFromListener;
         number1 = result;
-        display.textContent = number1 + symbol;
+        display.textContent = number1 + NumberCharacterFromListener;
         previousKey = "operator";
     } else if (previousKey === "del") {
         number1 = display.textContent;
-        operator = clName;
-        display.textContent = number1 + symbol;
+        operator = operatorCharacterFromListener;
+        display.textContent = number1 + NumberCharacterFromListener;
         previousKey = "operator";
         return;
     } else if (previousKey !== "operator") {
         if (number1 === "") {
-            operator = clName;
-            number1 = n1;
-            display.textContent = number1 + symbol;
+            operator = operatorCharacterFromListener;
+            number1 = enteredCharacter;
+            display.textContent = number1 + NumberCharacterFromListener;
             previousKey = "operator";
         } else {
-            number2 = n1;
+            number2 = enteredCharacter;
             result = calculate(number1, operator, number2);
-            operator = clName;
+            operator = operatorCharacterFromListener;
             number1 = result;
-            display.textContent = number1 + symbol;
+            display.textContent = number1 + NumberCharacterFromListener;
             previousKey = "operator";
         }
     } else if (previousKey === "operator") {
-        operator = clName;
+        operator = operatorCharacterFromListener;
         display.textContent = "";
-        display.textContent = number1 + symbol;
+        display.textContent = number1 + NumberCharacterFromListener;
     }
 }
 
-function caseComma(symbol) {
+function caseComma(NumberCharacterFromListener) {
     if (display.textContent === "" || previousKey === "operator") {
-        n1 = 0;
-        n1 += symbol;
+        enteredCharacter = 0;
+        enteredCharacter += NumberCharacterFromListener;
     } else if (previousKey === "enter") {
         return;
-    } else if (display.textContent !== "" && !n1.includes(".")) {
-        n1 += symbol;
-    } else if (display.textContent !== "" && n1.includes(".")) {
+    } else if (display.textContent !== "" && !enteredCharacter.includes(".")) {
+        enteredCharacter += NumberCharacterFromListener;
+    } else if (display.textContent !== "" && enteredCharacter.includes(".")) {
         return;
     }
-    display.textContent = n1;
+    display.textContent = enteredCharacter;
     previousKey = "comma";
 }
 
 function caseAc() {
     display.textContent = "";
-    n1 = "";
-    n2 = "";
+    enteredCharacter = "";
     number1 = "";
     number2 = "";
     result = "";
@@ -158,14 +157,14 @@ function caseAc() {
 
 function caseDel() {
     if (display.textContent !== "") {
-        n1 = display.textContent.split("").slice(0, -1).join('');
+        enteredCharacter = display.textContent.split("").slice(0, -1).join('');
     }
-    display.textContent = n1;
+    display.textContent = enteredCharacter;
     previousKey = "del";
 }
 
 function caseEnter() {
-    number2 = n1;
+    number2 = enteredCharacter;
     result = calculate(number1, operator, number2);
     display.textContent = result;
     number1 = result;
